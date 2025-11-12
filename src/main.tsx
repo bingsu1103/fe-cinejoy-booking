@@ -1,8 +1,9 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import About from "./components/About";
-import Home from "./components/Home";
+import About from "./pages/About";
+import Home from "./pages/Home";
+import { Theme } from "@radix-ui/themes";
 
 const router = createBrowserRouter([
   {
@@ -22,5 +23,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />
+  <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%">
+    <RouterProvider router={router} />
+  </Theme>
 );
