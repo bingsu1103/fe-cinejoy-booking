@@ -24,8 +24,8 @@ const Header: React.FC = () => (
             <NavigationMenu.Root>
               <NavigationMenu.List className="flex items-center gap-1">
                 {[
-                  { label: "Phim", href: "#phim" },
-                  { label: "Rạp", href: "#rap" },
+                  { label: "Phim", href: "/movie" },
+                  { label: "Rạp", href: "/authorium" },
                   { label: "Lịch chiếu", href: "#lichchieu" },
                   { label: "Ưu đãi", href: "#uudai" },
                   { label: "Hỗ trợ", href: "#hotro" },
@@ -86,6 +86,16 @@ const Header: React.FC = () => (
                     label: "Phim",
                     href: "#phim",
                     icon: <Film className="w-4 h-4" />,
+                  },
+                  {
+                    label: "Trang phim",
+                    href: "/movie",
+                    icon: <Film className="w-4 h-4" />,
+                  },
+                  {
+                    label: "Đặt vé",
+                    href: "/booking",
+                    icon: <Ticket className="w-4 h-4" />,
                   },
                   {
                     label: "Rạp",

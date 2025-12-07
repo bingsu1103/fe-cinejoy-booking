@@ -134,15 +134,6 @@ const Hero: React.FC = () => (
                 <ChevronDown className="w-4 h-4" />
               </button>
 
-              {/* Movie */}
-              <div className="relative">
-                <input
-                  placeholder="Chọn phim muốn xem"
-                  className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800 px-10 py-2 text-sm focus:outline-none"
-                />
-                <Film className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-              </div>
-
               <PrimaryButton className="w-full md:w-auto">
                 <Ticket className="w-4 h-4" />
                 Tìm suất chiếu

@@ -3,6 +3,9 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import About from "./pages/About";
 import Home from "./pages/Home";
+import Movie from "./pages/Movie";
+import Booking from "./pages/Booking";
+import Checkout from "./pages/Checkout";
 import { Theme } from "@radix-ui/themes";
 
 const router = createBrowserRouter([
@@ -17,6 +20,22 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/movie",
+        element: <Movie />,
+      },
+      {
+        path: "/movie/:id",
+        element: <Movie />,
+      },
+      {
+        path: "/booking",
+        element: <Booking />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
       },
     ],
   },
