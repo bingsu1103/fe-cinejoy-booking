@@ -7,6 +7,7 @@ import Movie from "./pages/Movie";
 import Booking from "./pages/Booking";
 import Checkout from "./pages/Checkout";
 import { Theme } from "@radix-ui/themes";
+import ToastProvider from "./components/context/ToastProvider";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%">
+    <ToastProvider />
     <RouterProvider router={router} />
   </Theme>
 );
