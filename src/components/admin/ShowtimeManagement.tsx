@@ -68,7 +68,7 @@ const ShowtimeManagement = () => {
 
   // ================= FETCH ROOT DATA =================
   const fetchAddresses = async () => {
-    const res = await addressApi.getAll();
+    const res = await addressApi.getAllAddresses();
     setAddresses(res.data.data);
   };
 
@@ -85,15 +85,15 @@ const ShowtimeManagement = () => {
     form.setFieldsValue({ theaterId: null, auditoriumId: null });
     setAuditoriums([]);
 
-    const res = await theaterApi.getByAddress(addressId);
-    setTheaters(res.data.data);
+    // const res = await theaterApi.getByAddress(addressId);
+    // setTheaters(res.data.data);
   };
 
   const handleTheaterChange = async (theaterId: number) => {
     form.setFieldsValue({ auditoriumId: null });
 
-    const res = await auditoriumApi.getByTheater(theaterId);
-    setAuditoriums(res.data.data);
+    // const res = await auditoriumApi.getByTheater(theaterId);
+    // setAuditoriums(res.data.data);
   };
 
   // ================= FILM MODAL =================

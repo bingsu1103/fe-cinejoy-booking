@@ -31,7 +31,7 @@ export default function ToastProvider() {
           fixed top-15 right-6 
           flex flex-col gap-2 
           w-96 max-w-[90vw]
-          z-9999
+          z-9999999999
         "
       />
     </Toast.Provider>

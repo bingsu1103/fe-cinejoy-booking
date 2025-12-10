@@ -20,6 +20,8 @@ import {
 } from "@ant-design/icons";
 import userApi from "../../service/api-user";
 import { Popconfirm } from "antd";
+import authApi from "../../service/api-auth";
+import { useToast } from "../../hooks/useToast";
 
 const { Title, Text } = Typography;
 
@@ -47,13 +49,14 @@ const UserManagement: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const [form] = Form.useForm();
+  const { success, error } = useToast();
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
 
-        const res = await userApi.getAllUsers(currentPage - 1, SIZE);
+        const res = await userApi.getAllUsers(currentPage, SIZE);
 
         const apiData = res.data;
 
@@ -68,6 +71,31 @@ const UserManagement: React.FC = () => {
 
     fetchUsers();
   }, [currentPage]);
+
+  const handleCreateUser = async () => {
+    try {
+      const values = await form.validateFields();
+      console.log("Create user:", values);
+
+      const res = await authApi.register(
+        values.username,
+        values.email,
+        values.password,
+        values.phone,
+        values.role
+      );
+      if (res.statusCode === 201) {
+        success("Tạo user thành công!");
+      } else {
+        error("Tạo user thất bại!");
+      }
+
+      setOpen(false);
+      form.resetFields();
+    } catch (error) {
+      console.log("Validate failed:", error);
+    }
+  };
 
   const columns = [
     {
@@ -204,13 +232,7 @@ const UserManagement: React.FC = () => {
         title="Create User"
         okText="Create"
         destroyOnClose
-        onOk={() => {
-          form.validateFields().then((values) => {
-            console.log("Create user:", values);
-            setOpen(false);
-            form.resetFields();
-          });
-        }}
+        onOk={handleCreateUser}
       >
         <Form layout="vertical" form={form}>
           <Form.Item
@@ -246,7 +268,7 @@ const UserManagement: React.FC = () => {
 
           <Form.Item label="Role" name="role" rules={[{ required: true }]}>
             <Select>
-              <Select.Option value="CUSTOMER">USER</Select.Option>
+              <Select.Option value="CUSTOMER">CUSTOMER</Select.Option>
               <Select.Option value="ADMIN">ADMIN</Select.Option>
             </Select>
           </Form.Item>

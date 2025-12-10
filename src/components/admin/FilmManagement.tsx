@@ -20,6 +20,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import filmApi from "../../service/api-film";
+import { useToast } from "../../hooks/useToast";
 
 const { Title, Text } = Typography;
 
@@ -45,6 +46,7 @@ const FilmManagement = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const [form] = Form.useForm();
+  const { success, error } = useToast();
 
   const fetchFilms = async () => {
     try {
@@ -68,25 +70,36 @@ const FilmManagement = () => {
   }, [currentPage]);
 
   const handleSubmit = async () => {
-    const values = await form.validateFields();
-
     try {
-      if (editingFilm) {
-        // await filmApi.update(editingFilm.id, values);
-        message.success("Cập nhật thành công");
-      } else {
-        console.log(values);
+      const values = await form.validateFields();
 
-        await filmApi.createFilm(values);
-        message.success("Thêm phim thành công");
+      if (editingFilm) {
+        // const res = await filmApi.update(editingFilm.id, values);
+        // if (res.statusCode === 200) {
+        //   message.success(res.message || "Cập nhật thành công");
+        // } else {
+        //   message.error(res.message || "Cập nhật thất bại");
+        //   return;
+        // }
+        return;
+      } else {
+        const res = await filmApi.createFilm(values);
+
+        if (res.statusCode === 201) {
+          success(res.message || "Thêm phim thành công");
+        } else {
+          error(res.message || "Thêm phim thất bại");
+          return;
+        }
       }
 
       setOpen(false);
       setEditingFilm(null);
       form.resetFields();
       fetchFilms();
-    } catch {
-      message.error("Thao tác thất bại");
+    } catch (e: any) {
+      const msg = e?.response?.data?.message || e?.message || "Có lỗi xảy ra";
+      error(msg);
     }
   };
 

@@ -9,9 +9,12 @@ import {
   Form,
   Input,
   Typography,
+  Select,
 } from "antd";
 import { PlusOutlined, EditOutlined, BankOutlined } from "@ant-design/icons";
 import theaterApi from "../../service/api-theater";
+import { useToast } from "../../hooks/useToast";
+import addressApi from "../../service/api-address";
 
 const { Title, Text } = Typography;
 
@@ -40,8 +43,10 @@ const TheaterManagement: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [address, setAddress] = useState<Address[]>([]);
 
   const [form] = Form.useForm();
+  const { success, error } = useToast();
 
   useEffect(() => {
     const fetchTheaters = async () => {
@@ -64,7 +69,25 @@ const TheaterManagement: React.FC = () => {
     fetchTheaters();
   }, [currentPage]);
 
-  // ✅ TABLE COLUMNS
+  useEffect(() => {
+    const fetchAllLocation = async () => {
+      const response = await addressApi.getAllAddresses();
+      setAddress(response.data.data);
+    };
+    fetchAllLocation();
+  }, []);
+
+  const handleCreateTheater = async () => {
+    const values = await form.validateFields();
+    const res = await theaterApi.createTheater(values.name, values.addressId);
+    if (res.statusCode === 201) {
+      success("Tạo rạp chiếu thành công!");
+    } else {
+      error("Tạo rạp chiếu thất bại");
+    }
+    setOpen(false);
+    form.resetFields();
+  };
   const columns = [
     {
       title: "Theater",
@@ -182,13 +205,7 @@ const TheaterManagement: React.FC = () => {
         title="Create Theater"
         okText="Create"
         destroyOnClose
-        onOk={() => {
-          form.validateFields().then((values) => {
-            console.log("Create theater:", values);
-            setOpen(false);
-            form.resetFields();
-          });
-        }}
+        onOk={handleCreateTheater}
       >
         <Form layout="vertical" form={form}>
           <Form.Item
@@ -200,23 +217,17 @@ const TheaterManagement: React.FC = () => {
           </Form.Item>
 
           <Form.Item
-            label="Street number"
-            name="street_number"
+            label="Address"
+            name="addressId"
             rules={[{ required: true }]}
           >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Street name"
-            name="street_name"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item label="City" name="city" rules={[{ required: true }]}>
-            <Input />
+            <Select>
+              {address.map((v: Address) => (
+                <Select.Option key={v.id} value={String(v.id)}>
+                  {v.city}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
         </Form>
       </Modal>
