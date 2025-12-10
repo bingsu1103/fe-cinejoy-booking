@@ -16,7 +16,8 @@ const authApi = {
     username: string,
     email: string,
     password: string,
-    phone?: string
+    phone?: string,
+    role?: string
   ): Promise<IBackendRes<IRegisterRes>> => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const response = await axios.post(`${backendUrl}/api/v1/auth/register`, {
@@ -24,6 +25,7 @@ const authApi = {
       email,
       password,
       phone,
+      role,
     });
     return response;
   },

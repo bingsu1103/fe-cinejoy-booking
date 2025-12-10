@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @import "@radix-ui/themes/styles.css";
+@import "antd/dist/reset.css";
+
+body {
+    background-color: var(--gray-1);
+    color: var(--gray-12);
+}

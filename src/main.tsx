@@ -6,8 +6,16 @@ import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import Booking from "./pages/Booking";
 import Checkout from "./pages/Checkout";
-import { Theme } from "@radix-ui/themes";
 import ToastProvider from "./components/context/ToastProvider";
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminDashboard from "./pages/AdminDashBoard";
+import UserManagement from "./components/admin/UserManagement";
+import TheaterManagement from "./components/admin/TheaterManagement";
+import AuditoriumManagement from "./components/admin/AuditoriumManagement";
+import FilmManagement from "./components/admin/FilmManagement";
+import ShowtimeManagement from "./components/admin/ShowtimeManagement";
+import AddressManagement from "./components/admin/AddressManagement";
+import BookingManagement from "./components/admin/BookingManagement";
 
 const router = createBrowserRouter([
   {
@@ -40,11 +48,49 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <AdminDashboard />,
+      },
+      {
+        path: "users",
+        element: <UserManagement />,
+      },
+      {
+        path: "theaters",
+        element: <TheaterManagement />,
+      },
+      {
+        path: "auditoriums",
+        element: <AuditoriumManagement />,
+      },
+      {
+        path: "films",
+        element: <FilmManagement />,
+      },
+      {
+        path: "showtimes",
+        element: <ShowtimeManagement />,
+      },
+      {
+        path: "addresses",
+        element: <AddressManagement />,
+      },
+      {
+        path: "bookings",
+        element: <BookingManagement />,
+      },
+    ],
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%">
+  <>
     <ToastProvider />
     <RouterProvider router={router} />
-  </Theme>
+  </>
 );

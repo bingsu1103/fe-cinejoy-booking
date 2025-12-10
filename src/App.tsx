@@ -1,12 +1,14 @@
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import { Outlet } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import authApi from "./service/api-auth";
 import { useAuth } from "./store/useAuth";
+import { Theme } from "@radix-ui/themes";
 
 const App: React.FC = () => {
   const setUser = useAuth((state) => state.setUser);
+  const [mode, setMode] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     const fetchAccount = async () => {
@@ -19,11 +21,19 @@ const App: React.FC = () => {
   }, [setUser]);
 
   return (
-    <main className="bg-white dark:bg-zinc-950 text-zinc-950 dark:text-zinc-50">
-      <Header />
-      <Outlet />
-      <Footer />
-    </main>
+    <Theme
+      appearance={mode}
+      accentColor="crimson"
+      grayColor="sand"
+      radius="large"
+      scaling="95%"
+    >
+      <main>
+        <Header mode={mode} setMode={setMode} />
+        <Outlet />
+        <Footer />
+      </main>
+    </Theme>
   );
 };
 
