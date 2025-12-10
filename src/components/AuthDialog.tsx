@@ -4,6 +4,7 @@ import { useState } from "react";
 import authApi from "../service/api-auth";
 import PrimaryButton from "./PrimaryButton";
 import { Text } from "@radix-ui/themes";
+import { useToast } from "../hooks/useToast";
 
 const AuthDialog: React.FC<{
   mode: "login" | "register";
@@ -16,17 +17,25 @@ const AuthDialog: React.FC<{
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { error, success } = useToast();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await authApi.login(email, password);
 
-    if (res.statusCode === 200) {
-      localStorage.setItem("access_token", res.data.accessToken);
-      setUser(res.data.user);
-      onOpenChange(false);
-      setEmail("");
-      setPassword("");
+    try {
+      const response = await authApi.login(email, password);
+
+      if (response.statusCode === 200) {
+        localStorage.setItem("access_token", response.data.accessToken);
+        setUser(response.data.user);
+        onOpenChange(false);
+        setEmail("");
+        setPassword("");
+        success("Đăng nhập thành công!");
+      }
+    } catch (e: any) {
+      const msg = e.message;
+      error(msg);
     }
   };
 
@@ -47,9 +56,13 @@ const AuthDialog: React.FC<{
 
         {/* ✅ Content nền CỨNG – KHÔNG trong suốt */}
         <Dialog.Content
+          style={{
+            backgroundColor: "var(--gray-1)",
+            color: "var(--gray-12)",
+          }}
           className="fixed left-1/2 top-1/2 w-[92vw] max-w-md 
           -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 shadow-xl
-          bg-white dark:bg-zinc-900
+          
           border border-zinc-200 dark:border-zinc-800"
         >
           {/* HEADER */}
@@ -63,7 +76,7 @@ const AuthDialog: React.FC<{
             </Dialog.Title>
 
             <Dialog.Close asChild>
-              <button className="rounded-md p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+              <button className="rounded-md p-2 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </Dialog.Close>
@@ -84,7 +97,6 @@ const AuthDialog: React.FC<{
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="rounded-md border px-3 py-2 
-                    bg-white dark:bg-zinc-950
                     border-zinc-200 dark:border-zinc-800
                     text-zinc-900 dark:text-zinc-50
                     focus:outline-none focus:ring-2 
@@ -100,7 +112,7 @@ const AuthDialog: React.FC<{
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="rounded-md border px-3 py-2 
-                    bg-white dark:bg-zinc-950
+                   
                     border-zinc-200 dark:border-zinc-800
                     text-zinc-900 dark:text-zinc-50
                     focus:outline-none focus:ring-2 
@@ -118,9 +130,7 @@ const AuthDialog: React.FC<{
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="rounded-md border px-3 py-2 
-                bg-white dark:bg-zinc-950
                 border-zinc-200 dark:border-zinc-800
-                text-zinc-900 dark:text-zinc-50
                 focus:outline-none focus:ring-2 
                 focus:ring-indigo-500 dark:focus:ring-indigo-400"
               />
@@ -134,9 +144,7 @@ const AuthDialog: React.FC<{
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="rounded-md border px-3 py-2 
-                bg-white dark:bg-zinc-950
                 border-zinc-200 dark:border-zinc-800
-                text-zinc-900 dark:text-zinc-50
                 focus:outline-none focus:ring-2 
                 focus:ring-indigo-500 dark:focus:ring-indigo-400"
               />
@@ -161,20 +169,34 @@ const AuthDialog: React.FC<{
             )}
 
             {mode === "login" && (
-              <button type="button" className="ml-auto text-xs underline">
-                Quên mật khẩu?
-              </button>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="cursor-pointer ml-auto underline"
+                >
+                  <Text className="text-xs">Quên mật khẩu?</Text>
+                </button>
+              </div>
             )}
 
-            <PrimaryButton type="submit" className="mt-2 rounded-md">
-              {mode === "login" ? "Đăng nhập" : "Tạo tài khoản"}
+            <PrimaryButton
+              type="submit"
+              className="mt-2 rounded-md cursor-pointer"
+            >
+              {mode === "login" ? (
+                <span>Đăng nhập</span>
+              ) : (
+                <span>Tạo tài khoản</span>
+              )}
             </PrimaryButton>
           </form>
 
-          <Text size="1" color="gray" className="mt-3 block">
-            Bằng việc tiếp tục, bạn đồng ý với Điều khoản & Chính sách bảo mật
-            của CineJoy.
-          </Text>
+          <div className="mt-5">
+            <Text color="gray" className="mt-3 block text-xs">
+              Bằng việc tiếp tục, bạn đồng ý với Điều khoản & Chính sách bảo mật
+              của CineJoy.
+            </Text>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

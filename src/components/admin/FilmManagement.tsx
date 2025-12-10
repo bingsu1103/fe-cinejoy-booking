@@ -34,7 +34,7 @@ interface Film {
   posterUrl: string;
 }
 
-const SIZE = 5;
+const SIZE = 15;
 
 const FilmManagement = () => {
   const [films, setFilms] = useState<Film[]>([]);

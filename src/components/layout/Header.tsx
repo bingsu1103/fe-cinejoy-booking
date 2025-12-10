@@ -174,8 +174,8 @@ const Header: React.FC<HeaderProps> = ({ mode, setMode }) => {
                   z-50
                 "
                   style={{
-                    backgroundColor: "var(--gray-1)", // ✅ NỀN THEO RADIX THEME
-                    color: "var(--gray-12)", // ✅ MÀU TEXT THEO THEME
+                    backgroundColor: "var(--gray-1)",
+                    color: "var(--gray-12)",
                   }}
                 >
                   {films.map((film) => (
