@@ -16,6 +16,7 @@ import FilmManagement from "./components/admin/FilmManagement";
 import ShowtimeManagement from "./components/admin/ShowtimeManagement";
 import AddressManagement from "./components/admin/AddressManagement";
 import BookingManagement from "./components/admin/BookingManagement";
+import { ConfigProvider } from "antd";
 
 const router = createBrowserRouter([
   {
@@ -90,7 +91,33 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <>
-    <ToastProvider />
-    <RouterProvider router={router} />
+    <ConfigProvider
+      theme={{
+        token: {
+          // ✅ NỀN – TEXT LẤY TỪ RADIX
+          colorBgBase: "var(--gray-1)",
+          colorTextBase: "var(--gray-12)",
+
+          // ✅ BORDER – DIVIDER
+          colorBorder: "var(--gray-6)",
+          colorSplit: "var(--gray-6)",
+
+          // ✅ PRIMARY (map theo tone bạn muốn, ví dụ indigo)
+          colorPrimary: "#4f46e5",
+
+          // ✅ BACKGROUND CỦA COMPONENT
+          colorBgContainer: "var(--gray-2)",
+          colorBgElevated: "var(--gray-3)",
+
+          // ✅ TEXT PHỤ
+          colorTextSecondary: "var(--gray-10)",
+
+          borderRadius: 8,
+        },
+      }}
+    >
+      <ToastProvider />
+      <RouterProvider router={router} />
+    </ConfigProvider>
   </>
 );

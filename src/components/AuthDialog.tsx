@@ -5,6 +5,7 @@ import authApi from "../service/api-auth";
 import PrimaryButton from "./PrimaryButton";
 import { Text } from "@radix-ui/themes";
 import { useToast } from "../hooks/useToast";
+import { Input } from "antd";
 
 const AuthDialog: React.FC<{
   mode: "login" | "register";
@@ -89,14 +90,15 @@ const AuthDialog: React.FC<{
           >
             {mode === "register" && (
               <>
-                <label className="grid gap-1">
+                <label className="grid gap-1 font-bold">
                   <Text size="2">Họ và tên</Text>
-                  <input
+                  <Input
+                    size="large"
                     type="text"
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="rounded-md border px-3 py-2 
+                    className="rounded-xs border px-3 py-1.5
                     border-zinc-200 dark:border-zinc-800
                     text-zinc-900 dark:text-zinc-50
                     focus:outline-none focus:ring-2 
@@ -106,12 +108,13 @@ const AuthDialog: React.FC<{
 
                 <label className="grid gap-1">
                   <Text size="2">Số điện thoại</Text>
-                  <input
+                  <Input
+                    size="large"
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="rounded-md border px-3 py-2 
+                    className="rounded-xs border px-3 py-1.5
                    
                     border-zinc-200 dark:border-zinc-800
                     text-zinc-900 dark:text-zinc-50
@@ -124,12 +127,13 @@ const AuthDialog: React.FC<{
 
             <label className="grid gap-1">
               <Text size="2">Email</Text>
-              <input
+              <Input
+                size="large"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="rounded-md border px-3 py-2 
+                className="rounded-xs border px-3 py-1.5
                 border-zinc-200 dark:border-zinc-800
                 focus:outline-none focus:ring-2 
                 focus:ring-indigo-500 dark:focus:ring-indigo-400"
@@ -138,12 +142,13 @@ const AuthDialog: React.FC<{
 
             <label className="grid gap-1">
               <Text size="2">Mật khẩu</Text>
-              <input
+              <Input
+                size="large"
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="rounded-md border px-3 py-2 
+                className="rounded-xs border px-3 py-1.5
                 border-zinc-200 dark:border-zinc-800
                 focus:outline-none focus:ring-2 
                 focus:ring-indigo-500 dark:focus:ring-indigo-400"
@@ -153,13 +158,14 @@ const AuthDialog: React.FC<{
             {mode === "register" && (
               <label className="grid gap-1">
                 <Text size="2">Xác nhận mật khẩu</Text>
-                <input
+                <Input
+                  size="large"
                   type="password"
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="rounded-md border px-3 py-2 
-                  bg-white dark:bg-zinc-950
+                  className="rounded-xs border px-3 py-1.5
+                 
                   border-zinc-200 dark:border-zinc-800
                   text-zinc-900 dark:text-zinc-50
                   focus:outline-none focus:ring-2 
@@ -181,7 +187,7 @@ const AuthDialog: React.FC<{
 
             <PrimaryButton
               type="submit"
-              className="mt-2 rounded-md cursor-pointer"
+              className="mt-4 rounded-md cursor-pointer"
             >
               {mode === "login" ? (
                 <span>Đăng nhập</span>
