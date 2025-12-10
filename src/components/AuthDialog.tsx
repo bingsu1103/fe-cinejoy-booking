@@ -46,15 +46,15 @@ const AuthDialog: React.FC<{
       if (password !== confirmPassword) {
         error("Mật khẩu không trùng khớp");
       }
-      await authApi.register(username, email, password, phone);
+      const response = await authApi.register(username, email, password, phone);
       onOpenChange(false);
       setEmail("");
       setPassword("");
       setUsername("");
       setPhone("");
       success("Đăng kí thành công!");
-    } catch (e) {
-      const msg = e.message;
+    } catch (e: any) {
+      const msg = e?.response?.data?.message || e?.message || "Có lỗi xảy ra";
       error(msg);
     }
   };
