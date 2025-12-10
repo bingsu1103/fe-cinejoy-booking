@@ -42,6 +42,21 @@ const Booking: React.FC = () => {
   const [countdown, setCountdown] = useState(300);
 
   const navigate = useNavigate();
+  const PRICE = {
+    NORMAL: 70000,
+    VIP: 90000,
+  };
+
+  const getSeatPrice = (row: string) => {
+    return row === "D" || row === "E" ? PRICE.VIP : PRICE.NORMAL;
+  };
+
+  const totalPrice = useMemo(() => {
+    return selectedSeats.reduce((sum, seat) => {
+      const row = seat.charAt(0);
+      return sum + getSeatPrice(row);
+    }, 0);
+  }, [selectedSeats]);
 
   const theaters = useMemo(() => {
     const r = regions.find((x) => x.id === selectedRegion);
@@ -58,9 +73,7 @@ const Booking: React.FC = () => {
   const cols = [1, 2, 3, 4, 5, 6, 7, 8];
 
   // ✅ CHỈ 2 LOẠI GHẾ: THƯỜNG & VIP (D, E là VIP)
-  const getSeatClass = (row: string, selected: boolean) => {
-    if (selected) return "bg-indigo-600 text-white";
-
+  const getSeatClass = (row: string) => {
     const isVip = row === "D" || row === "E";
 
     return isVip
@@ -186,12 +199,12 @@ const Booking: React.FC = () => {
 
                 {/* ✅ MÀN HÌNH */}
                 <div className="mb-4 flex flex-col items-center">
-                  <div className="w-full max-w-xs h-3 bg-zinc-300 rounded-full" />
+                  <div className="w-full max-w-xs h-3  rounded-full" />
                   <div className="mt-1 text-xs text-zinc-500">Màn hình</div>
                 </div>
 
                 {/* ✅ SƠ ĐỒ GHẾ CÓ HÀNG A–E */}
-                <div className="bg-zinc-50 p-4 rounded-xl">
+                <div className="p-4 rounded-xl">
                   {/* Header số ghế */}
                   <div className="flex justify-center mb-2 gap-2 text-xs text-zinc-500">
                     <span className="w-6" /> {/* chừa chỗ cho label hàng */}
@@ -215,14 +228,15 @@ const Booking: React.FC = () => {
                       {cols.map((c) => {
                         const seat = `${r}${c}`;
                         const selected = selectedSeats.includes(seat);
+
                         return (
                           <Button
                             key={seat}
+                            type={selected ? "primary" : "default"}
                             onClick={() => toggleSeat(seat)}
-                            className={`!w-9 !h-9 !p-0 ${getSeatClass(
-                              r,
-                              selected
-                            )}`}
+                            className={`!w-9 !h-9 !p-0 ${
+                              selected ? "" : getSeatClass(r)
+                            }`}
                           >
                             {c}
                           </Button>
@@ -246,15 +260,20 @@ const Booking: React.FC = () => {
                     <div className="w-4 h-4 bg-indigo-600 rounded" />
                     Đang chọn
                   </div>
+                  <div className="mt-3 text-right text-lg font-semibold text-indigo-600">
+                    Tạm tính: {totalPrice.toLocaleString()} đ
+                  </div>
                 </div>
 
-                <PrimaryButton
-                  className="mt-4 w-full"
-                  onClick={handleConfirmSeats}
-                  disabled={!selectedSeats.length}
-                >
-                  Xác nhận & Giữ ghế
-                </PrimaryButton>
+                <div className="mt-5">
+                  <PrimaryButton
+                    className="w-full cursor-pointer"
+                    onClick={handleConfirmSeats}
+                    disabled={!selectedSeats.length}
+                  >
+                    Xác nhận & Giữ ghế
+                  </PrimaryButton>
+                </div>
               </>
             )}
           </div>
@@ -263,18 +282,18 @@ const Booking: React.FC = () => {
 
       {/* ✅ MODAL GIỮ GHẾ */}
       {holdVisible && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-xl p-4 flex items-center justify-between z-50">
+        <div className="fixed bottom-0 left-0 right-0 border-t shadow-xl p-10 bg-[#4F39F5] flex items-center justify-between z-50">
           <div>
-            <div className="text-sm font-medium">
+            <div className="text-lg font-medium">
               Ghế: {selectedSeats.join(", ")}
             </div>
-            <div className="text-xs text-zinc-500">
-              Giữ trong: {Math.floor(countdown / 60)}:
+            <span className="text-5xl font-bold">
+              {Math.floor(countdown / 60)}:
               {(countdown % 60).toString().padStart(2, "0")}
-            </div>
+            </span>
           </div>
 
-          <PrimaryButton onClick={handlePayment}>Thanh toán</PrimaryButton>
+          <Button onClick={handlePayment}>Thanh toán</Button>
         </div>
       )}
     </section>

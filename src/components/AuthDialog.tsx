@@ -41,12 +41,22 @@ const AuthDialog: React.FC<{
   };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      return alert("Mật khẩu không trùng khớp");
+    try {
+      e.preventDefault();
+      if (password !== confirmPassword) {
+        error("Mật khẩu không trùng khớp");
+      }
+      await authApi.register(username, email, password, phone);
+      onOpenChange(false);
+      setEmail("");
+      setPassword("");
+      setUsername("");
+      setPhone("");
+      success("Đăng kí thành công!");
+    } catch (e) {
+      const msg = e.message;
+      error(msg);
     }
-    await authApi.register(username, email, password, phone);
-    onOpenChange(false);
   };
 
   return (
@@ -90,10 +100,9 @@ const AuthDialog: React.FC<{
           >
             {mode === "register" && (
               <>
-                <label className="grid gap-1 font-bold">
-                  <Text size="2">Họ và tên</Text>
+                <label className="grid gap-1 text-[15px]">
+                  <Text size="1">Tên người dùng</Text>
                   <Input
-                    size="large"
                     type="text"
                     required
                     value={username}
@@ -106,10 +115,9 @@ const AuthDialog: React.FC<{
                   />
                 </label>
 
-                <label className="grid gap-1">
+                <label className="grid gap-1 text-[15px]">
                   <Text size="2">Số điện thoại</Text>
                   <Input
-                    size="large"
                     type="tel"
                     required
                     value={phone}
@@ -125,10 +133,9 @@ const AuthDialog: React.FC<{
               </>
             )}
 
-            <label className="grid gap-1">
+            <label className="grid gap-1 text-[15px]">
               <Text size="2">Email</Text>
               <Input
-                size="large"
                 type="email"
                 required
                 value={email}
@@ -140,10 +147,9 @@ const AuthDialog: React.FC<{
               />
             </label>
 
-            <label className="grid gap-1">
+            <label className="grid gap-1 text-[15px]">
               <Text size="2">Mật khẩu</Text>
               <Input
-                size="large"
                 type="password"
                 required
                 value={password}
@@ -156,10 +162,9 @@ const AuthDialog: React.FC<{
             </label>
 
             {mode === "register" && (
-              <label className="grid gap-1">
+              <label className="grid gap-1 text-[15px]">
                 <Text size="2">Xác nhận mật khẩu</Text>
                 <Input
-                  size="large"
                   type="password"
                   required
                   value={confirmPassword}

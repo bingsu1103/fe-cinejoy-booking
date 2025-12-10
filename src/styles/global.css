@@ -6,3 +6,17 @@ body {
     background-color: var(--gray-1);
     color: var(--gray-12);
 }
+
+.ant-table-tbody>tr.ant-table-row:hover>td {
+    background: inherit !important;
+}
+
+/* ===== TẮT HOVER KHI CÓ SELECTION ===== */
+.ant-table-tbody>tr.ant-table-row-selected:hover>td {
+    background: inherit !important;
+}
+
+/* ===== TẮT HOVER CELL ===== */
+.ant-table-cell-row-hover {
+    background: inherit !important;
+}
